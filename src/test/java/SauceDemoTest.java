@@ -1,3 +1,4 @@
+import com.saucedemo.page_object.HeaderPage;
 import com.saucedemo.page_object.InventoryPage;
 import com.saucedemo.page_object.LoginPage;
 import org.apache.commons.configuration2.Configuration;
@@ -14,15 +15,17 @@ public class SauceDemoTest {
     ChromeDriver driver;
     LoginPage loginPage;
     InventoryPage inventoryPage;
+    HeaderPage headerPage;
 
     Configurations configs;
     Configuration config;
-    
+
     @BeforeMethod
     public void setUp() throws ConfigurationException {
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         inventoryPage = new InventoryPage(driver);
+        headerPage = new HeaderPage(driver);
 
         configs = new Configurations();
         config = configs.properties("config.properties");
@@ -42,6 +45,7 @@ public class SauceDemoTest {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
 
         inventoryPage.selectItemByName("Backpack");
+        Assert.assertEquals("1",  headerPage.getShoppingCartBadge().getText());
     }
 
     @AfterMethod
